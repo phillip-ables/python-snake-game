@@ -16,6 +16,18 @@ Define a class Player
 holds the players position and the speed 
 define the actions a Player instance can do (movements):
 '''
+class Apple:
+    x = 0
+    y = 0
+    step = 44
+
+    def __init__(self, x, y):
+        self.x = x * self.step
+        self.y = y * self.step
+
+    def draw(self, surface, image):
+        surface.blit(image, (self.x, self.y))
+
 class Player:
     x = []  # position
     y = []
@@ -26,10 +38,10 @@ class Player:
     updateCountMax = 2
     updateCount = 0
 
-    def __init__(self, length):
+    def __init__(self, length):  # is this where the player(10) is used
         self.length = length
         for i in range(0, length):
-            self.x.append(0)
+            self.x.append(0)  # what the hell am i appending here
             self.y.append(0)
 
     def update(self):
@@ -67,36 +79,28 @@ class Player:
         for i in range(0, self.length):
             surface.blit(image, (self.x[i], self.y[i]))
 
-class Apple:
-    x = 0
-    y = 0
-    step = 44
-
-    def __init__(self, x, y):
-        self.x = x * self.step
-        self.y = y * self.step
-
-    def draw(self, surface, image):
-        surface.bilt(image, (self.x, self.y))
-
 class App:
     windowWidth = 800  # to play one must have a field
     windowHeight = 600
     player = 0
+    apple = 0
 
     def __init__(self):  # set the values of variables etc. - just after memory is allocated for it.
         self._running = True
-        self._display_surf = None
+        self._display_surf = None  # why does it need to instantiate these variables on init
         self._image_surf = None
+        self._apple_surf = None
         self.player = Player(10)
+        self.apple = Apple(5, 5)
 
     def on_init(self):
         pygame.init()
         self._display_surf = pygame.display.set_mode((self.windowWidth,self.windowHeight), pygame.HWSURFACE)  # set h and w and hardwarHW runs overspeed if fullyscreen or something
         
-        pygame.display.set_caption('Pygame snake example')        
+        pygame.display.set_caption('Pygame Sanke')        
         self._running = True
         self._image_surf = pygame.image.load("pygame.jpg").convert()
+        self._apple_surf = pygame.image.load("pillow.png").convert()
 
     def on_event(self, event):
         if event.type == QUIT:
@@ -107,8 +111,9 @@ class App:
         pass
 
     def on_render(self):
-        self._display_surf.fill((0,0,0))
+        self._display_surf.fill((0,0,0))  # what am i filling
         self.player.draw(self._display_surf, self._image_surf)
+        self.apple.draw(self._display_surf, self._apple_surf)
         pygame.display.flip()
 
     def on_cleanup(self):
