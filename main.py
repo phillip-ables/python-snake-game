@@ -67,6 +67,18 @@ class Player:
         for i in range(0, self.length):
             surface.blit(image, (self.x[i], self.y[i]))
 
+class Apple:
+    x = 0
+    y = 0
+    step = 44
+
+    def __init__(self, x, y):
+        self.x = x * self.step
+        self.y = y * self.step
+
+    def draw(self, surface, image):
+        surface.bilt(image, (self.x, self.y))
+
 class App:
     windowWidth = 800  # to play one must have a field
     windowHeight = 600
