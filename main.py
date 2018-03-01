@@ -1,6 +1,7 @@
   # https://pythonspot.com/snake-with-pygame/
 from pygame.locals import *
 import pygame
+import time
 '''
 A player object can be created and 
 variables can be modified using the movement methods.
@@ -16,18 +17,29 @@ holds the players position and the speed
 define the actions a Player instance can do (movements):
 '''
 class Player:
-    x = 10  # position
-    y = 10
-    speed = 1  # speed
+    x = 0  # position
+    y = 0
+    speed = 32  # speed
+    direction = 0
 
-    def moveRight(self):  # actions
-        self.x = self.x + self.speed
+    def update(self):
+        if self.direction == 0:
+            self.x = self.x + self.speed
+        if self.direction == 1:
+            self.x = self.x - self.speed
+        if self.direction == 2:
+            self.y = self.y - self.speed
+        if self.direction == 3:
+            self.y = self.y + self.speed
+
+    def moveRight(self):
+        self.direction = 0
     def moveLeft(self):
-        self.x = self.x - self.speed
+        self.direction = 1
     def moveUp(self):
-        self.y = self.y - self.speed
+        self.direction = 2
     def moveDown(self):
-        self.y = self.y + self.speed
+        self.direction = 3
 
 class App:
     windowWidth = 800  # to play one must have a field
@@ -90,3 +102,4 @@ class App:
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
+    time.sleep (100.0 / 1000.0)
