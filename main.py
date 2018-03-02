@@ -1,5 +1,6 @@
   # https://pythonspot.com/snake-with-pygame/
 from pygame.locals import *
+from random import randint
 import pygame
 import time
 '''
@@ -29,20 +30,24 @@ class Apple:
         surface.blit(image, (self.x, self.y))
 
 class Player:
-    x = []  # position
+    x = []  # position  // why do you need these in the constructor is it so they are private or is it just easier to set up pre build
     y = []
     step = 44  # speed
     direction = 0
-    length = 3;
+    length = 3
 
-    updateCountMax = 2
+    updateCountMax = 2  # i still dont understand wtf this is (is it to double the update time)
     updateCount = 0
 
     def __init__(self, length):  # is this where the player(10) is used
         self.length = length
-        for i in range(0, length):
-            self.x.append(0)  # what the hell am i appending here
-            self.y.append(0)
+        for i in range(0, 2000):
+            self.x.append(-100)  # what the hell am i appending here
+            self.y.append(-100)
+
+            # initial position, no collision
+        self.x[1] = 1*44
+        self.x[2] = 2*44
 
     def update(self):
 
@@ -50,8 +55,7 @@ class Player:
         if self.updateCount > self.updateCountMax:
                 # update previous position
             for i in range(self.length-1, 0, -1):
-                print("self.x["+str(i)+"] = self.x["+str(i-1)+"]")
-                self.x[i] = self.x[i-1]
+                self.x[i] = self.x[i-1]  # change position by one
                 self.y[i] = self.y[i-1]
 
                 # update position of head of snake
@@ -79,6 +83,13 @@ class Player:
         for i in range(0, self.length):
             surface.blit(image, (self.x[i], self.y[i]))
 
+class Game:
+    def isCollision(self, x1, y1, x2, y2, bsize):
+        if x1 >= x2 and x1 <= x2 + bsize:  # idk about this
+            if y1 >- y2 and y1 <= y2 + bsize:
+                return True
+        return False
+
 class App:
     windowWidth = 800  # to play one must have a field
     windowHeight = 600
@@ -90,7 +101,7 @@ class App:
         self._display_surf = None  # why does it need to instantiate these variables on init
         self._image_surf = None
         self._apple_surf = None
-        self.player = Player(10)
+        self.player = Player(3)
         self.apple = Apple(5, 5)
 
     def on_init(self):
@@ -108,7 +119,15 @@ class App:
 
     def on_loop(self):
         self.player.update()
-        pass
+        
+          # does snake eat apple?
+        for i in range(2, self.player.length):
+            if Game.isCollision(self, self.player.x[0], self.player.y[0], self.player.x[i], self.player.y[i], 40):
+                print("You lose! Collision: ")
+                print("x[0] ("+ str(self.player.x[0])+", "+str(self.player.y[0])+")")
+                print("x["+str(i)+"] ("+str(self.player.x[i])+", "+str(self.player.y[i])+")")
+                exit(0)
+        pass  # necessary
 
     def on_render(self):
         self._display_surf.fill((0,0,0))  # what am i filling
