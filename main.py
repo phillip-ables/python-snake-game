@@ -121,6 +121,13 @@ class App:
         self.player.update()
         
           # does snake eat apple?
+        for i in range(0, self.player.length):
+            if Game.isCollision(self, self.apple.x, self.apple.y, self.player.x[i], self.player.y[i], 44):
+                self.apple.x = randint(0, 3) * 44
+                self.apple.y = randint(0, 3) * 44
+                self.player.length = self.player.length + 1
+
+          # does snake collide with itself?
         for i in range(2, self.player.length):
             if Game.isCollision(self, self.player.x[0], self.player.y[0], self.player.x[i], self.player.y[i], 40):
                 print("You lose! Collision: ")
